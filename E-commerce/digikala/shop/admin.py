@@ -38,7 +38,7 @@ class OrderAdmin(admin.ModelAdmin):
              order.delete()
 
 class OrderProductAdmin(admin.ModelAdmin):
-    list_display = ['id','product','user','quantity','price','order_id']
+    list_display = ['id','product','order','quantity','price','order_id']
   
 
     def delete_queryset(self,request,queryset):
@@ -47,9 +47,11 @@ class OrderProductAdmin(admin.ModelAdmin):
 
 
 
-admin.site.register(models.Cart)
-admin.site.register(models.Product)
-admin.site.register(models.OrderProduct)
-admin.site.register(models.Order)
+
+
+admin.site.register(models.Cart,CartAdmin)
+admin.site.register(models.Product,ProductAdmin)
+admin.site.register(models.OrderProduct,OrderProductAdmin)
+admin.site.register(models.Order,OrderAdmin)
 admin.site.register(models.Category,CategoryAdmin)
 
