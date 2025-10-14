@@ -1,9 +1,17 @@
 from django.urls import path
-from .views import index ,store , checkout , product
+from .views import index ,store , checkout , detail ,add_to_cart ,cart_detail ,remove_from_cart
+
+
+app_name = 'shop'
+
 
 urlpatterns = [
-    path('index/' ,index ),
-    path('store/' ,store ),
-    path('product/' ,product ),
-    path('checkout/' ,checkout ),
+    path('index/' ,index,name='index' ),
+    path('store/' ,store ,name='store'),
+    path('<int:id>/<str:title>/' ,detail ,name='detail'),
+    path('checkout/' ,checkout,name='checkout' ),
+    path('add-to-cart' , add_to_cart , name='add_to_cart'),
+    path('cart' , cart_detail , name='cart_detail'),
+    path('cart/remove/<int:product_id>/' , remove_from_cart , name='remove_from_cart'),
+    
 ]

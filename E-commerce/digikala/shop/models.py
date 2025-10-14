@@ -33,7 +33,7 @@ class Product(BaseModel):
     title = models.CharField(max_length=100)
     content = models.TextField()
     price = models.IntegerField()
-    image = models.ImageField()
+    image = models.ImageField(upload_to='image/product')
     quantity = models.PositiveIntegerField()
     status = models.BooleanField(default=True)
     category = models.ForeignKey(Category,on_delete=models.SET_NULL ,null=True , blank=True)
@@ -42,6 +42,10 @@ class Product(BaseModel):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+        from django.urls import reverse
+
+        return reverse("shop:detail", kwargs={'id':self.id, 'title':self.title})
 
 class Cart(BaseModel):
     quantity = models.PositiveIntegerField()
@@ -54,8 +58,8 @@ class Order(BaseModel):
     status = models.BooleanField(null=True)
 
 class OrderProduct(BaseModel):
-    order = models.ForeignKey(Order,on_delete=models.CASCADE)
     product = models.ForeignKey(Product , on_delete=models.SET_DEFAULT , default=None , null=True)
+    order = models.ForeignKey(Order,on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     price = models.IntegerField()
 
