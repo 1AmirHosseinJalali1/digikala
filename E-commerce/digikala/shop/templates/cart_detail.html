@@ -44,7 +44,7 @@
                                 <div class="input-number">
                                     <input type="number" name="quantity" value="{{values.quantity}}">
                                     <input type="hidden" name="product_id" value="{{values.product.id}}">
-                                    <button class="qty-up">+</button>
+                                    <button  class="qty-up">+</button>
                                     <button class="qty-down">-</button>
                                 </div>
                             </div>
@@ -56,7 +56,8 @@
                 <td>{{values.TotalPrice}}</td>
                 <td><a href="{% url 'shop:remove_from_cart' product_id=values.product.id %}">remove</a></td>
             </tr>
-        {% endfor %}
-
+            {% endfor %}
+            
+            <p>{{FinalPrice}}</p>
     </table>
 {% endblock content %}
