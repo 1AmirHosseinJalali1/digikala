@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from accounts.models import City
 # Create your models here.
 
 # class User(models.Model):
@@ -23,11 +24,13 @@ class BaseModel(models.Model):
         self.deleted = True
         self.save()
 
+
 class Category(BaseModel):
     title = models.CharField(max_length=100)
     
     def __str__(self):
         return self.title
+
 
 class Product(BaseModel):
     title = models.CharField(max_length=100)
@@ -47,15 +50,27 @@ class Product(BaseModel):
 
         return reverse("shop:detail", kwargs={'id':self.id, 'title':self.title})
 
+
 class Cart(BaseModel):
     quantity = models.PositiveIntegerField()
     product = models.ForeignKey(Product , on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
 
+
 class Order(BaseModel):
     total_price = models.IntegerField()
     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     status = models.BooleanField(null=True)
+    note = models.CharField(max_length=200,blank=True)
+    different_address = models.CharField(default=False,blank=True)
+    first_name = models.CharField(max_length=50 , blank=True)
+    last_name = models.CharField(max_length=50 , blank=True)
+    mobile = models.CharField(max_length=11)
+    address = models.CharField(max_length=200)
+    city = models.ForeignKey(City , on_delete=models.SET_NULL ,null=True)
+    postal_code = models.CharField(max_length=10) 
+    zarinpal_authority = models.CharField(max_length=50 , null=True)
+    zarinpal_ref_id = models.IntegerField(null=True )
 
 class OrderProduct(BaseModel):
     product = models.ForeignKey(Product , on_delete=models.SET_DEFAULT , default=None , null=True)

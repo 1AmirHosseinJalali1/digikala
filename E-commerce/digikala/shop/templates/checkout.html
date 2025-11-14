@@ -8,6 +8,9 @@
 	a.edit{
 		text-decoration-line: underline;
 	}
+	.edit{
+		text-decoration-line: underline;
+	}
 </style>
 
 {% endblock styles%}
@@ -42,97 +45,41 @@
 				<div class="row">
 
 					<div class="col-md-7">
+						
 						<!-- Billing Details -->
 						<div class="billing-details">
 							<div class="section-title">
 								<h3 class="title">Billing address</h3>
 							</div>
 							<div class="form-group">
-								<input class="input" type="text" name="first-name" placeholder="First Name">
+								First Name : {{request.user.first_name}}
 							</div>
 							<div class="form-group">
-								<input class="input" type="text" name="last-name" placeholder="Last Name">
+								Last Name : {{request.user.last_name}}
 							</div>
 							<div class="form-group">
-								<input class="input" type="email" name="email" placeholder="Email">
+								Email : {{request.user.email}}
 							</div>
 							<div class="form-group">
-								<input class="input" type="text" name="address" placeholder="Address">
+								Province : {{request.user.profile.city.province}}
 							</div>
 							<div class="form-group">
-								<input class="input" type="text" name="city" placeholder="City">
+								City : {{request.user.profile.city}}
 							</div>
 							<div class="form-group">
-								<input class="input" type="text" name="country" placeholder="Country">
+								Postal Code : {{request.user.profile.postal_code}}
 							</div>
 							<div class="form-group">
-								<input class="input" type="text" name="zip-code" placeholder="ZIP Code">
+								Mobile : {{request.user.mobile }}
 							</div>
 							<div class="form-group">
-								<input class="input" type="tel" name="tel" placeholder="Telephone">
+								Address : {{request.user.profile.address}}
 							</div>
-							<div class="form-group">
-								<div class="input-checkbox">
-									<input type="checkbox" id="create-account">
-									<label for="create-account">
-										<span></span>
-										Create Account?
-									</label>
-									<div class="caption">
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</p>
-										<input class="input" type="password" name="password" placeholder="Enter Your Password">
-									</div>
-								</div>
-							</div>
+							<a class="edit" href="{% url 'accounts:edit_profile'%}">Edit your Profile</a>
 						</div>
 						<!-- /Billing Details -->
 
-						<!-- Shiping Details -->
-						<div class="shiping-details">
-							<div class="section-title">
-								<h3 class="title">Shiping address</h3>
-							</div>
-							<div class="input-checkbox">
-								<input type="checkbox" id="shiping-address">
-								<label for="shiping-address">
-									<span></span>
-									Ship to a diffrent address?
-								</label>
-								<div class="caption">
-									<div class="form-group">
-										<input class="input" type="text" name="first-name" placeholder="First Name">
-									</div>
-									<div class="form-group">
-										<input class="input" type="text" name="last-name" placeholder="Last Name">
-									</div>
-									<div class="form-group">
-										<input class="input" type="email" name="email" placeholder="Email">
-									</div>
-									<div class="form-group">
-										<input class="input" type="text" name="address" placeholder="Address">
-									</div>
-									<div class="form-group">
-										<input class="input" type="text" name="city" placeholder="City">
-									</div>
-									<div class="form-group">
-										<input class="input" type="text" name="country" placeholder="Country">
-									</div>
-									<div class="form-group">
-										<input class="input" type="text" name="zip-code" placeholder="ZIP Code">
-									</div>
-									<div class="form-group">
-										<input class="input" type="tel" name="tel" placeholder="Telephone">
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- /Shiping Details -->
-
-						<!-- Order notes -->
-						<div class="order-notes">
-							<textarea class="input" placeholder="Order Notes"></textarea>
-						</div>
-						<!-- /Order notes -->
+						
 					</div>
 
 					<!-- Order Details -->
@@ -146,14 +93,12 @@
 								<div><strong>TOTAL</strong></div>
 							</div>
 							<div class="order-products">
+								{% for item in cart %}
 								<div class="order-col">
-									<div>1x Product Name Goes Here</div>
-									<div>$980.00</div>
+									<div>{{item.quantity}}x {{item.product.title}}</div>
+									<div>${{item.product.price}}</div>
 								</div>
-								<div class="order-col">
-									<div>2x Product Name Goes Here</div>
-									<div>$980.00</div>
-								</div>
+								{% endfor %}
 							</div>
 							<div class="order-col">
 								<div>Shiping</div>
@@ -161,49 +106,75 @@
 							</div>
 							<div class="order-col">
 								<div><strong>TOTAL</strong></div>
-								<div><strong class="order-total">$2940.00</strong></div>
+								<div><strong class="order-total">${{cart.get_total_price}}</strong></div>
 							</div>
 						</div>
-						<div class="payment-method">
-							<div class="input-radio">
-								<input type="radio" name="payment" id="payment-1">
-								<label for="payment-1">
+						
+						<!-- Order notes -->
+						<div class="order-notes">
+							<textarea class="input" name="note" placeholder="Order Notes"></textarea>
+						</div>
+						<!-- /Order notes -->
+						<form method="post">
+							
+						<!-- Shiping Details -->
+						<div class="shiping-details">
+							
+							<div class="input-checkbox">
+								<input type="checkbox" name="different_address" id="shiping-address">
+								<label for="shiping-address">
 									<span></span>
-									Direct Bank Transfer
+									Ship to a diffrent address?
 								</label>
-								<div class="caption">
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-								</div>
-							</div>
-							<div class="input-radio">
-								<input type="radio" name="payment" id="payment-2">
-								<label for="payment-2">
-									<span></span>
-									Cheque Payment
-								</label>
-								<div class="caption">
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-								</div>
-							</div>
-							<div class="input-radio">
-								<input type="radio" name="payment" id="payment-3">
-								<label for="payment-3">
-									<span></span>
-									Paypal System
-								</label>
-								<div class="caption">
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+									<div class="caption">
+										<div class="section-title">
+										<h3 class="title">Shiping address</h3>
+									</div>
+									<div class="form-group">
+										<input class="input" type="text" name="first_name" placeholder="First Name">
+									</div>
+									<div class="form-group">
+										<input class="input" type="text" name="last_name" placeholder="Last Name">
+									</div>
+									<div class="form-group">
+										<input class="input" type="email" name="email" placeholder="Email">
+									</div>
+									<div class="form-group">
+										<select class="input" name="province" id="province">
+											<option value="">Select Province ...</option>
+											{% for item in provinces %}
+											<option value="{{item.id}}">{{item.title}} </option>
+											{% endfor %}
+										</select>
+										<!-- <input class="input" type="text" name="province" placeholder="province"> -->
+									</div>
+									<div class="form-group">
+										<select class="input" name="city" id="city">
+											<option value="">Select city ...</option>
+											<!-- {% for item in cities %}
+											<option value="{{item.id}}">{{item.title}} </option>
+											{% endfor %} -->
+									
+										</select>
+										<!-- <input class="input" type="text" name="city" placeholder="City"> -->
+									</div>
+									<div class="form-group">
+										<input class="input" type="text" name="postal_code" placeholder="postal_code">
+									</div>
+									<div class="form-group">
+										<input class="input" type="tel" name="mobile" placeholder="mobile">
+									</div>
+									<div class="form-group">
+										<input class="input" type="text" name="address" placeholder="Address">
+									</div>
 								</div>
 							</div>
 						</div>
-						<div class="input-checkbox">
-							<input type="checkbox" id="terms">
-							<label for="terms">
-								<span></span>
-								I've read and accept the <a href="#">terms & conditions</a>
-							</label>
-						</div>
-						<a href="#" class="primary-btn order-submit">Place order</a>
+						<!-- /Shiping Details -->
+
+							<input type="submit" value="PlaceOrder" class="primary-btn order-submit">
+							{% csrf_token %}
+						</form>
 					</div>
 					<!-- /Order Details -->
 				</div>
@@ -212,4 +183,58 @@
 			<!-- /container -->
 		</div>
 		<!-- /SECTION -->
+		 
 {% endblock content %}
+{% block scripts %}
+<script>
+$(document).ready(function(){
+    $('#shiping-address').change(function(){
+        if ($(this).is(':checked')){
+            $('input[name="first-name"]').prop('required', true);
+            $('input[name="last-name"]').prop('required', true);
+            $('input[name="email"]').prop('required', true);
+            $('input[name="province"]').prop('required', true);
+            $('input[name="city"]').prop('required', true);
+            $('input[name="postal_code"]').prop('required', true);
+            $('input[name="mobile"]').prop('required', true);
+            $('input[name="address"]').prop('required', true);
+            $('select[name="province"]').prop('required', true);
+            $('select[name="city"]').prop('required', true);
+        } else {
+            $('input[name="first-name"]').removeAttr('required');
+			$('input[name="last-name"]').removeAttr('required');
+            $('input[name="email"]').removeAttr('required');
+            $('input[name="province"]').removeAttr('required');
+            $('input[name="city"]').removeAttr('required');
+            $('input[name="postal_code"]').removeAttr('required');
+            $('input[name="mobile"]').removeAttr('required');
+            $('input[name="address"]').removeAttr('required');
+            $('select[name="city"]').removeAttr('required', true);
+
+        }
+    });
+	//
+	$('#province').change(function(){
+		$('#city').empty();
+		$('#city').append('<option value="">Select city ...</option>')
+
+		let province_id = $(this).val();
+
+		$.ajax({
+			url :'http://127.0.0.1:8000/accounts/get-cities/',
+			dataType:'json',
+			data:{
+				'province_id':province_id
+			},
+			success : function(data){
+				$.map(data , function(item){
+				$('#city').append('<option value="'+item.id+'">'+item.title+'</option>')
+
+				})
+			}
+		})
+	})
+});
+</script>
+{% endblock scripts %}
+

@@ -64,6 +64,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'shop.context_processors.cart_context',
             ],
         },
     },
@@ -127,3 +128,32 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.user'
 MEDIA_ROOT = 'media'
 MEDIA_URL = 'media/'
+
+# ZARINPAL_REQUEST_URL =  'https://sandbox.zarinpal.com/pg/rest/WebGate/PaymentRequest.json'
+# ZARINPAL_VERIFY_URL =  'https://sandbox.zarinpal.com/pg/rest/WebGate/PaymentVerification.json'
+ZARINPAL_STARTPAY =  'https://sandbox.zarinpal.com/pg/StartPay/'
+ZARINPAL_MERCHANT_ID = '3dfd19eb-8d02-4db5-9f6b-b6f353ab0d28'
+ZARINPAL_CALLBACK_URL = 'http://127.0.0.1:8000/shop/verify/'
+
+ZARINPAL_VERIFY_URL = "https://sandbox.zarinpal.com/pg/v4/payment/verify.json"
+ZARINPAL_REQUEST_URL = "https://sandbox.zarinpal.com/pg/v4/payment/request.json"
+
+
+from django.contrib.messages import constants as messages
+
+# MESSAGE_TAGS = {
+#     messages.DEBUG: 'alert-info',
+#     messages.INFO: 'alert-info',
+#     messages.INFO: 'alert-info',
+#     messages.SUCCESS: 'alert-success',
+#     messages.WARNING: 'alert-warning',
+#     messages.ERROR: 'alert-danger',
+
+# }
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'accounts.backends.EmailBackend',
+    'accounts.backends.MobileBackend',
+    ]

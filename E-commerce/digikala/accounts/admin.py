@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User
+from .models import User , Profile ,City , Province
 # Register your models here.
 
 
@@ -11,3 +11,6 @@ class UserAdmin(admin.ModelAdmin):
         for user in queryset:
             user.delete()
 admin.site.register(User,UserAdmin)
+admin.site.register(Profile)
+admin.site.register(Province)
+admin.site.register(City)

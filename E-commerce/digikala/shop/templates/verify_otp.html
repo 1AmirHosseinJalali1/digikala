@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Mobile Login
+{% endblock title %}
+{% block content %}
+<div class="container">
+    <h1>Verify OTP</h1>
+    <form method="post" action="">
+        <label for="mobile">OTP:</label>
+        <input type="text" name="otp" id="otp">
+        {% csrf_token %}
+        <input type="submit" value="Login">
+    </form>
+    <p></p>
+    <p id="timer-box">send otp again: <span id="timer">60 </span> seconds</p>
+    <p id="resend-link"><a href="{% url 'accounts:resend_otp'%}">Resend otp</a></p>
+    
+    
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{message.tags}}">
+           <p>{{message}}</p> 
+        </div>
+    {% endfor %}
+    {% endif %}
+</div>
+{% endblock content %}
+{% block scripts %}
+<script>
+    $(document).ready(function(){
+        let timerBox = $('#timer-box')
+        let timerSpan = $('#timer')
+        let resendLink = $('#resend-link')
+        let timeLeft = 60
+        resendLink.hide()
+
+        let interval = setInterval(function(){
+            if (timeLeft <= 0){
+                clearInterval(interval)
+                resendLink.show();
+                timerBox.hide()
+            }else{
+                timerSpan.text(timeLeft);
+                timeLeft -= 1
+            }
+        },1000)
+
+        
+    })
+</script>
+
+{% endblock scripts %}
